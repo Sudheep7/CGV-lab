@@ -1,0 +1,74 @@
+#include<stdio.h>
+#include<glut.h>
+void draw_tri(float *a, float *b, float *c)
+{
+	glBegin(GL_POLYGON);
+	glVertex3fv(a);
+	glVertex3fv(b);
+	glVertex3fv(c);
+	glEnd();
+}
+void draw_tetra(float *a, float *b, float *c, float *d)
+{
+	glColor3f(1, 0, 0);
+	draw_tri(a, b, c);
+	glColor3f(0, 1, 0);
+	draw_tri(a, b, d);
+	glColor3f(0, 0, 1);
+	draw_tri(b, c, d);
+	glColor3f(1, 0, 1);
+	draw_tri(a, d, c);
+
+}
+void divide_tetra(float *a, float *b, float *c, float *d, int m)
+{
+	float ab[3], ac[3], bc[3], ad[3], bd[3], cd[3];
+	int j;
+	if (m > 0)
+	{
+		for (j = 0; j < 3; j++)
+		{
+			ab[j] = (a[j] + b[j]) / 2;
+			bc[j] = (b[j] + c[j]) / 2;
+			ac[j] = (a[j] + c[j]) / 2;
+			ad[j] = (a[j] + d[j]) / 2;
+			bd[j] = (b[j] + d[j]) / 2;
+			cd[j] = (c[j] + d[j]) / 2;
+		}
+		divide_tetra(ac, ab, a, ad, m - 1);
+		divide_tetra(bc, ac, c, cd, m - 1);
+		divide_tetra(ab, bc, b, bd, m - 1);
+		divide_tetra(bd, ad, cd, d, m - 1);
+	}
+	else
+		draw_tetra(a, b, c, d);
+
+
+}
+void display()
+{
+	float v[4][3] = { {-50,-25,0},{0,75,0},{50,-25,0},{0,0,25} };
+	int m = 1;
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	divide_tetra(v[0], v[1], v[2], v[3], m);
+	glFlush();
+}
+void my_init()
+{
+	glMatrixMode(GL_PROJECTION_MATRIX);
+	glLoadIdentity();
+	glOrtho(-100, 100, -100, 100, -100, 100);
+	glMatrixMode(GL_MODELVIEW);
+
+}
+int main()
+{
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_DEPTH | GLUT_RGB);
+	glutInitWindowSize(500, 500);
+	glutCreateWindow("3D_GASKET");
+	my_init();
+	glEnable(GL_DEPTH_TEST);
+	glutDisplayFunc(display);
+	glutMainLoop();
+}
