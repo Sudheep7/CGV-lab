@@ -60,7 +60,11 @@ p1=compopcode(x1,y1);
 }while(!done);
 if(accept)
 {
-float sx=(umax-umin)/(xmax-xmin); float sy=(vmax-vmin)/(ymax-ymin); x1=sx*x1+umin-sx*xmin; y1=sy*y1+vmin-sy*ymin; x2=sx*x2+umin-sx*xmin; y2=sy*y2+vmin-sy*ymin;
+float sx=(umax-umin)/(xmax-xmin); float sy=(vmax-vmin)/(ymax-ymin);
+x1=sx*x1+umin-sx*xmin; 
+y1=sy*y1+vmin-sy*ymin; 
+x2=sx*x2+umin-sx*xmin;
+y2=sy*y2+vmin-sy*ymin;
 }
 
 glBegin(GL_LINES); glVertex2f(x1,y1); glVertex2f(x2,y2); glEnd();
@@ -68,7 +72,14 @@ glFlush();
 }
 void display()
 {
-glClearColor(1,1,1,1); glClear(GL_COLOR_BUFFER_BIT); glColor3f(1,0,0); glBegin(GL_LINE_LOOP); glVertex2f(xmin,ymin); glVertex2f(xmin,ymax); glVertex2f(xmax,ymax); glVertex2f(xmax,ymin);
+glClearColor(1,1,1,1); 
+glClear(GL_COLOR_BUFFER_BIT);
+glColor3f(1,0,0);
+glBegin(GL_LINE_LOOP);
+glVertex2f(xmin,ymin); 
+glVertex2f(xmin,ymax);
+glVertex2f(xmax,ymax);
+glVertex2f(xmax,ymin);
 glEnd();
 glColor3f(0,0,1);
 glBegin(GL_LINES);
@@ -87,9 +98,19 @@ glFlush();
 }
 void main()
 {
-glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE); glutInitWindowPosition(100,100); glutInitWindowSize(500,500); glutCreateWindow("CLIPPING ALGORITHM"); myinit();
-printf("Enter the clipping window points xmin,xmax,ymin,ymax"); scanf("%f%f%f%f",&xmin,&xmax,&ymin,&ymax); printf("Enter the display window points umin,umax,vmin,vmax"); scanf("%f%f%f%f",&umin,&umax,&vmin,&vmax); printf("\nEnter the first point x1,y1\n"); scanf("%f%f",&x1,&y1);
-printf("\nEnter the second point x2,y2\n"); scanf("%f%f",&x2,&y2);
+glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE); 
+glutInitWindowPosition(100,100);
+glutInitWindowSize(500,500);
+glutCreateWindow("CLIPPING ALGORITHM");
+myinit();
+printf("Enter the clipping window points xmin,xmax,ymin,ymax");
+scanf("%f%f%f%f",&xmin,&xmax,&ymin,&ymax);
+printf("Enter the display window points umin,umax,vmin,vmax");
+scanf("%f%f%f%f",&umin,&umax,&vmin,&vmax);
+printf("\nEnter the first point x1,y1\n");
+scanf("%f%f",&x1,&y1);
+printf("\nEnter the second point x2,y2\n");
+scanf("%f%f",&x2,&y2);
 glutDisplayFunc(display);
 glutMainLoop();
 }
